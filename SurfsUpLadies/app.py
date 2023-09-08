@@ -100,14 +100,18 @@ def start_date(date):
     session = Session(engine)
 
     start_temp = session.query(func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs)).filter(measurement.date>=date).all()
+    session.close()
+    
     return jsonify(start_temp)
 
-@app.route("/api/v1.0/<start></end>")
+@app.route("/api/v1.0/<start>/<end>")
 def end_date(start, end):
     
     session = Session(engine)
 
     end_results = session.query(func.min(measurement.tobs), func.max(measurement.tobs), func.avg(measurement.tobs)).filter(measurement.date>=start).filter(measurement.date<=end).all()
+    session.close()
+    
     return jsonify(end_results)
 
 if __name__ == '__main__':
